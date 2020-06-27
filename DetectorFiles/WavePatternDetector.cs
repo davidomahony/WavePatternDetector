@@ -1,17 +1,34 @@
-﻿/// <summary>
+﻿
+/// <summary>
 /// Normally copyright stuff
 /// </summary>
-
 namespace WaveCounter
 {
+    using System;
 
     public class WavePatternDetector : BasePatternDetector<int>
     {
         IPatternDetector<int> crestDetector;
         IPatternDetector<int> troughDetector;
 
+        /// <summary>
+        /// Write a method that receive and array/list and returns if it is a wave crest, wave trough
+        ///  or nothing.
+        /// </summary>
+        /// <param name="crestDetector"></param>
+        /// <param name="troughDetector"></param>
         public WavePatternDetector(IPatternDetector<int> crestDetector, IPatternDetector<int> troughDetector)
         {
+            if (crestDetector == null || troughDetector == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (crestDetector.GetType() != typeof(CrestPatternDetector) && troughDetector.GetType() != typeof(TroughPatternDetector))
+            {
+                throw new ArgumentException("Wrong pattern detector has been inputted");
+            }
+
             this.crestDetector = crestDetector;
             this.troughDetector = troughDetector;
         }
